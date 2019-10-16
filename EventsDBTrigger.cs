@@ -14,7 +14,7 @@ namespace DataPipeline
             databaseName: "Data",
             collectionName: "Events",
             ConnectionStringSetting = "colbydatapipeline",
-            LeaseCollectionName = "leases")]IReadOnlyList<EventData> input, ILogger log)
+            LeaseCollectionName = "leases")]IReadOnlyList<Document> input, ILogger log)
         {
             if (input != null && input.Count > 0)
             {
