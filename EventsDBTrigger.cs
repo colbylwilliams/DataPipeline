@@ -17,11 +17,11 @@ namespace DataPipeline
             databaseName: "Data",
             collectionName: "Events",
             CreateLeaseCollectionIfNotExists = true,
-            ConnectionStringSetting = "colbydatapipeline")]IReadOnlyList<string> input, ILogger log)
+            ConnectionStringSetting = "colbydatapipeline")]IReadOnlyList<Document> input, ILogger log)
         {
             if (input != null && input.Count > 0)
             {
-                var events = input.Select(i => JsonConvert.DeserializeObject<EventData>(i));
+                var events = input.Select(i => JsonConvert.DeserializeObject<EventData>(JsonConvert.SerializeObject(i)));
 
                 foreach (var e in events)
                 {
