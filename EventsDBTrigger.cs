@@ -15,7 +15,7 @@ namespace DataPipeline
             databaseName: "Data",
             collectionName: "Events",
             CreateLeaseCollectionIfNotExists = true,
-            ConnectionStringSetting = "colbydatapipeline")]IReadOnlyList<Document> input, ILogger log)
+            ConnectionStringSetting = "CosmosDBConnection")]IReadOnlyList<Document> input, ILogger log)
         {
             if (input != null && input.Count > 0)
             {
