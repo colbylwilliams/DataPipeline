@@ -13,8 +13,8 @@ namespace DataPipeline
         public static void Run([CosmosDBTrigger(
             databaseName: "Data",
             collectionName: "Events",
-            ConnectionStringSetting = "colbydatapipeline",
-            LeaseCollectionName = "leases")]IReadOnlyList<Document> input, ILogger log)
+            CreateLeaseCollectionIfNotExists = true,
+            ConnectionStringSetting = "colbydatapipeline")]IReadOnlyList<Document> input, ILogger log)
         {
             if (input != null && input.Count > 0)
             {
