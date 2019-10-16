@@ -1,9 +1,12 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+
 
 namespace DataPipeline
 {
@@ -14,12 +17,18 @@ namespace DataPipeline
             databaseName: "Data",
             collectionName: "Events",
             CreateLeaseCollectionIfNotExists = true,
-            ConnectionStringSetting = "colbydatapipeline")]IReadOnlyList<Document> input, ILogger log)
+            ConnectionStringSetting = "colbydatapipeline")]IReadOnlyList<string> input, ILogger log)
         {
             if (input != null && input.Count > 0)
             {
+                var events = input.Select(i => JsonConvert.DeserializeObject<EventData>(i));
+
+                foreach (var e in events)
+                {
+                    log.LogInformation(e.Title);
+                }
+
                 log.LogInformation("Documents modified " + input.Count);
-                log.LogInformation("First document Id " + input[0].Id);
             }
         }
     }
