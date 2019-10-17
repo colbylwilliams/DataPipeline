@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 using Microsoft.Azure.Documents;
 using Newtonsoft.Json;
 
@@ -22,7 +19,7 @@ namespace DataPipeline
 
         public bool HasAnalytics => Sentiment.HasValue;
     }
-
+}
     // public class TextAnalytics
     // {
     //     [JsonProperty("languageDetection")]
@@ -160,4 +157,4 @@ namespace DataPipeline
     //     [JsonProperty("score")]
     //     public double Score { get; set; }
     // }
-}
+

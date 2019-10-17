@@ -1,7 +1,6 @@
 using System;
 
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.CognitiveServices.Language.TextAnalytics;
 
@@ -17,12 +16,17 @@ namespace DataPipeline
 
         [FunctionName(nameof(AddTextAnalytics))]
         public static void Run(
-            [QueueTrigger("event-queue")]EventData meessage,
+            [QueueTrigger("event-queue")]EventData message,
             [CosmosDB("Data", "Events", Id = "{id}", PartitionKey = "{location}", ConnectionStringSetting = "CosmosDBConnection")]EventData eventData, ILogger log)
         {
-            var sentimentResult = TextAnalyticsClient.Sentiment(eventData.Description);
+            if (eventData != null)
+            {
+                var sentimentResult = TextAnalyticsClient.Sentiment(eventData.Description);
+                eventData.Sentiment = sentimentResult.Score;
 
-            eventData.Sentiment = sentimentResult.Score;
+            } else {
+                throw new ArgumentNullException($"Could not find Event with id: {message.Id} and partitionKey: {message.Location}");
+            }
         }
     }
 }
